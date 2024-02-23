@@ -15,7 +15,7 @@ logger.setLevel(os.environ.get("LOGLEVEL", "INFO"))
 
 
 def lambda_handler(event: dict, context):
-    logger.info(json.dumps(event))
+    logger.debug(json.dumps(event))
     if (event_type := event.get("Type")) != "PreStartDeployment":
         logger.critical("Wrong event type %s for this function, ignoring", event_type)
         return
