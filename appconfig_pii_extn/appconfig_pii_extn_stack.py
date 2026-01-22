@@ -27,6 +27,7 @@ class AppconfigPiiExtnStack(Stack):
                 asset_excludes=[".venv", ".mypy_cache", ".ruff_cache"]
             ),
             description="AppConfig Extension to check for PII in configuration data with Amazon Comprehend",
+            architecture=aws_lambda.Architecture.ARM_64,
         )
         function.add_to_role_policy(
             iam.PolicyStatement(
