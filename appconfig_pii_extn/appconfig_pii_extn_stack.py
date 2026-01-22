@@ -3,7 +3,7 @@
 
 from typing import cast
 from aws_cdk import (
-    aws_appconfig_alpha as appconfig,
+    aws_appconfig,
     aws_lambda_python_alpha as aws_python,
     aws_lambda,
     aws_iam as iam,
@@ -20,7 +20,7 @@ class AppconfigPiiExtnStack(Stack):
             self,
             "pii_check_fn",
             index="index.py",
-            runtime=aws_lambda.Runtime.PYTHON_3_12,
+            runtime=aws_lambda.Runtime.PYTHON_3_14,
             handler="lambda_handler",
             entry="lambda",
             bundling=aws_python.BundlingOptions(
@@ -45,14 +45,14 @@ class AppconfigPiiExtnStack(Stack):
         )
         function.grant_invoke(appconfig_svc_role)
 
-        appconfig.Extension(
+        aws_appconfig.Extension(
             self,
             "pii_exten",
             actions=[
-                appconfig.Action(
-                    action_points=[appconfig.ActionPoint.PRE_START_DEPLOYMENT],
+                aws_appconfig.Action(
+                    action_points=[aws_appconfig.ActionPoint.PRE_START_DEPLOYMENT],
                     description="Check configuration data for PII",
-                    event_destination=appconfig.LambdaDestination(
+                    event_destination=aws_appconfig.LambdaDestination(
                         cast(aws_lambda.IFunction, function)
                     ),
                 )
